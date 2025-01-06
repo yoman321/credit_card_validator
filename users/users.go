@@ -1,13 +1,28 @@
 package users
 
-import "fmt"
-
 type User struct {
 	Name       string
 	CreditCard int
 }
 
-func IsCreditCardValid(creditCard int) bool {
-	fmt.Printf("For now credit card number %v is valid -> need to implement actual verification afterward", creditCard)
-	return true
+func (user User) IsCreditCardValid() bool {
+	creditCard := user.CreditCard
+	isEveryTwoDigits := false
+	sum := 0
+
+	for creditCard > 0 {
+		currDigit := creditCard % 10
+
+		if isEveryTwoDigits {
+			sum += currDigit * 2
+			isEveryTwoDigits = false
+		} else {
+			sum += currDigit
+			isEveryTwoDigits = true
+		}
+
+		creditCard /= 10
+	}
+
+	return sum%10 == 0
 }
